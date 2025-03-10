@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Conversationnel</title>
+    <title>Conversational Agent</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .chat-container {
@@ -74,105 +74,105 @@
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
-        <!-- Barre de navigation -->
+        <!-- Navigation bar -->
         <nav class="bg-white shadow-lg rounded-lg p-4 mb-4">
             <div class="flex justify-between items-center">
                 <div class="flex space-x-4">
                     <select id="sessionSelect" class="p-2 border rounded">
-                        <option value="default_user">Session par défaut</option>
+                        <option value="default_user">Default Session</option>
                     </select>
                     <button onclick="createNewSession()" class="bg-blue-500 text-white px-4 py-2 rounded">
-                        Nouvelle Session
+                        New Session
                     </button>
                 </div>
                 <div class="flex space-x-2">
                     <button onclick="showHistory()" class="bg-gray-500 text-white px-4 py-2 rounded">
-                        Historique
+                        History
                     </button>
                     <button onclick="showPrompts()" class="bg-green-500 text-white px-4 py-2 rounded">
                         Prompts
                     </button>
                     <button onclick="resetSession()" class="bg-red-500 text-white px-4 py-2 rounded">
-                        Réinitialiser
+                        Reset
                     </button>
                 </div>
             </div>
         </nav>
 
-        <!-- Zone de chat -->
+        <!-- Chat area -->
         <div class="bg-white rounded-lg shadow-lg p-4">
             <div id="chatContainer" class="chat-container overflow-y-auto mb-4">
-                <!-- Les messages seront ajoutés ici -->
+                <!-- Messages will be added here -->
             </div>
 
             <div class="flex space-x-2">
                 <input type="text" id="messageInput" 
                        class="flex-1 p-2 border rounded"
-                       placeholder="Tapez votre message..."
+                       placeholder="Type your message..."
                        onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()" 
                         class="bg-blue-500 text-white px-6 py-2 rounded">
-                    Envoyer
+                    Send
                 </button>
             </div>
         </div>
 
-        <!-- Boutons d'action -->
+        <!-- Action buttons -->
         <div class="mt-4 flex space-x-2">
             <button onclick="showCurrentPrompt()" 
                     class="bg-purple-500 text-white px-4 py-2 rounded">
-                Voir le prompt actuel
+                View Current Prompt
             </button>
             <button onclick="showCurrentPrompt()" 
                     class="bg-indigo-500 text-white px-4 py-2 rounded">
-                Modifier le prompt
+                Edit Prompt
             </button>
         </div>
     </div>
 
-    <!-- Modal pour le prompt système -->
+    <!-- System prompt modal -->
     <div id="promptModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal('promptModal')">&times;</span>
-            <h2 class="text-xl mb-4">Modifier le Prompt Système</h2>
+            <h2 class="text-xl mb-4">Edit System Prompt</h2>
             <textarea id="systemPrompt" class="w-full h-32 p-2 border rounded mb-4"></textarea>
             <div class="flex justify-end space-x-2">
                 <button onclick="closeModal('promptModal')" 
                         class="bg-gray-500 text-white px-4 py-2 rounded">
-                    Annuler
+                    Cancel
                 </button>
                 <button onclick="updateSystemPrompt()" 
                         class="bg-blue-500 text-white px-4 py-2 rounded">
-                    Sauvegarder
+                    Save
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal pour l'historique -->
+    <!-- History modal -->
     <div id="historyModal" class="modal">
         <div class="modal-content">
-            <h2 class="text-xl mb-4">Historique des Conversations</h2>
+            <h2 class="text-xl mb-4">Conversation History</h2>
             <div id="historyContent" class="max-h-96 overflow-y-auto"></div>
             <div class="flex justify-end mt-4">
                 <button onclick="closeModal('historyModal')" 
                         class="bg-gray-500 text-white px-4 py-2 rounded">
-                    Fermer
+                    Close
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal pour les prompts prédéfinis -->
+    <!-- Predefined prompts modal -->
     <div id="promptsModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal('promptsModal')">&times;</span>
-            <h2 class="text-xl font-bold mb-6">Prompts Prédéfinis</h2>
+            <h2 class="text-xl font-bold mb-6">Predefined Prompts</h2>
             <div id="promptsList" class="mb-6 space-y-4"></div>
             <div class="flex justify-end mt-4 border-t pt-4">
                 <button onclick="closeModal('promptsModal')" 
                         class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
-                    Fermer
+                    Close
                 </button>
             </div>
         </div>
@@ -182,14 +182,14 @@
         let currentSession = 'default_user';
         let ws = null;
 
-        // Initialisation
+        // Initialization
         async function init() {
             await loadSessions();
             connectWebSocket();
             loadHistory();
         }
 
-        // Gestion des WebSockets
+        // WebSocket management
         function connectWebSocket() {
             if (ws) {
                 ws.close();
@@ -201,20 +201,20 @@
             };
         }
 
-        // Affichage des modals
+        // Modal display
         function showModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Empêche le défilement du fond
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Réactive le défilement
+            document.body.style.overflow = 'auto';
         }
 
-        // Gestion de l'historique
+        // History management
         async function showHistory() {
             const response = await fetch(`/sessions/${currentSession}/history`);
             const data = await response.json();
@@ -231,7 +231,7 @@
             showModal('historyModal');
         }
 
-        // Affichage des prompts prédéfinis
+        // Display predefined prompts
         async function showPrompts() {
             const response = await fetch('/prompts');
             const prompts = await response.json();
@@ -247,7 +247,7 @@
                     <div class="flex justify-end">
                         <button onclick="usePrompt('${type}')" 
                                 class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                            Utiliser ce prompt
+                            Use this prompt
                         </button>
                     </div>
                 `;
@@ -257,7 +257,7 @@
             showModal('promptsModal');
         }
 
-        // Utilisation d'un prompt prédéfini
+        // Use predefined prompt
         async function usePrompt(promptType) {
             await fetch(`/sessions/${currentSession}/use_prompt/${promptType}`, {
                 method: 'POST'
@@ -266,23 +266,23 @@
             loadHistory();
         }
 
-        // Affichage du prompt actuel
+        // Show current prompt
         async function showCurrentPrompt() {
             try {
                 const response = await fetch(`/sessions/${currentSession}/prompt`);
                 if (!response.ok) {
-                    throw new Error('Erreur lors de la récupération du prompt');
+                    throw new Error('Error retrieving prompt');
                 }
                 const data = await response.json();
                 document.getElementById('systemPrompt').value = data.prompt;
                 showModal('promptModal');
             } catch (error) {
-                console.error('Erreur:', error);
-                addMessage('system', 'Erreur lors de la récupération du prompt système.');
+                console.error('Error:', error);
+                addMessage('system', 'Error retrieving system prompt.');
             }
         }
 
-        // Chargement des sessions
+        // Load sessions
         async function loadSessions() {
             const response = await fetch('/sessions');
             const sessions = await response.json();
@@ -302,7 +302,7 @@
             };
         }
 
-        // Chargement de l'historique
+        // Load history
         async function loadHistory() {
             const response = await fetch(`/sessions/${currentSession}/history`);
             const data = await response.json();
@@ -313,7 +313,7 @@
             });
         }
 
-        // Envoi de message
+        // Send message
         async function sendMessage() {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
@@ -338,7 +338,7 @@
             }
         }
 
-        // Ajout d'un message dans l'interface
+        // Add message to interface
         function addMessage(role, content) {
             const container = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
@@ -348,7 +348,7 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // Gestion du prompt système
+        // System prompt management
         async function updateSystemPrompt() {
             try {
                 const prompt = document.getElementById('systemPrompt').value;
@@ -364,20 +364,20 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Erreur lors de la mise à jour du prompt');
+                    throw new Error('Error updating prompt');
                 }
 
                 closeModal('promptModal');
-                addSystemMessage('Le prompt système a été mis à jour avec succès');
+                addSystemMessage('System prompt successfully updated');
             } catch (error) {
-                console.error('Erreur:', error);
-                addSystemMessage('Erreur lors de la mise à jour du prompt système');
+                console.error('Error:', error);
+                addSystemMessage('Error updating system prompt');
             }
         }
 
-        // Création d'une nouvelle session
+        // Create new session
         async function createNewSession() {
-            const sessionId = prompt('Entrez un identifiant pour la nouvelle session:');
+            const sessionId = prompt('Enter an identifier for the new session:');
             if (sessionId) {
                 currentSession = sessionId;
                 await fetch(`/sessions/${sessionId}/prompt`, {
@@ -394,45 +394,45 @@
             }
         }
 
-        // Réinitialisation de la session
+        // Reset session
         async function resetSession() {
-            if (confirm('Voulez-vous vraiment réinitialiser cette session ?')) {
+            if (confirm('Are you sure you want to reset this session?')) {
                 try {
                     const response = await fetch(`/sessions/${currentSession}`, {
                         method: 'DELETE'
                     });
                     
                     if (!response.ok) {
-                        throw new Error('Erreur lors de la réinitialisation');
+                        throw new Error('Error during reset');
                     }
                     
                     document.getElementById('chatContainer').innerHTML = '';
-                    addSystemMessage('La session a été réinitialisée avec succès');
+                    addSystemMessage('Session successfully reset');
                 } catch (error) {
-                    console.error('Erreur:', error);
-                    addSystemMessage('Erreur lors de la réinitialisation de la session');
+                    console.error('Error:', error);
+                    addSystemMessage('Error resetting session');
                 }
             }
         }
 
-        // Gestion de la touche Entrée
+        // Handle Enter key
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
         }
 
-        // Initialisation au chargement
+        // Initialize on load
         window.onload = init;
 
-        // Ajout de la fermeture du modal en cliquant à l'extérieur
+        // Close modal when clicking outside
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 closeModal(event.target.id);
             }
         }
 
-        // Fonction pour ajouter un message système
+        // Add system message
         function addSystemMessage(message) {
             const container = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');

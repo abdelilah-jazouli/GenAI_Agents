@@ -1,105 +1,105 @@
-# Agent Conversationnel
+# Conversational Agent
 
-## Structure de l'Application
+## Application Structure
 ```
 conversational_agent/
-├── agent.py          # Implémentation de l'agent conversationnel
-├── cli.py           # Interface en ligne de commande
-├── web_app.py       # Interface web avec FastAPI
-├── static/          # Fichiers statiques pour l'interface web
-│   └── index.html   # Interface utilisateur web
-├── prompts.py       # Définition des prompts prédéfinis
-├── requirements.txt # Dépendances du projet
-└── .env            # Configuration des variables d'environnement
+├── agent.py          # Conversational agent implementation
+├── cli.py           # Command-line interface
+├── web_app.py       # Web interface with FastAPI
+├── static/          # Static files for web interface
+│   └── index.html   # Web user interface
+├── prompts.py       # Predefined prompts definition
+├── requirements.txt # Project dependencies
+└── .env            # Environment variables configuration
 ```
 
-## Installation et Configuration
+## Installation and Setup
 
-1. Installer les dépendances :
+1. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Configurer le fichier `.env` :
+2. Configure `.env` file:
 ```
-OPENAI_API_KEY=votre_clé_api_openai
+OPENAI_API_KEY=your_openai_api_key
 ```
 
-## Utilisation
+## Usage
 
-### Interface Web (Recommandée)
-1. Démarrer le serveur :
+### Web Interface (Recommended)
+1. Start the server:
 ```bash
 python web_app.py
 ```
-2. Ouvrir un navigateur et accéder à `http://localhost:8000`
+2. Open a browser and navigate to `http://localhost:8000`
 
-### Interface CLI
+### CLI Interface
 ```bash
 python cli.py [options]
 ```
 
-Options disponibles :
-- `--session <nom_session>` : Identifiant de session (défaut: default_user)
-- `--prompt-type <type>` : Type de prompt prédéfini (teacher, french, coder, writer)
-- `--system-prompt <prompt>` : Prompt système personnalisé
-- `--db-path <chemin>` : Chemin vers le fichier de base de données
+Available options:
+- `--session <session_name>` : Session identifier (default: default_user)
+- `--prompt-type <type>` : Predefined prompt type (teacher, french, coder, writer)
+- `--system-prompt <prompt>` : Custom system prompt
+- `--db-path <path>` : Path to database file
 
-Exemple :
+Example:
 ```bash
 python cli.py --session user1 --prompt-type teacher
 ```
 
-## Fonctionnalités Principales
+## Main Features
 
-### Interface Web
-- Gestion de sessions multiples
-- Visualisation et modification du prompt système
-- Historique des conversations
-- Sélection de prompts prédéfinis
-- Interface responsive et intuitive
-- Messages système avec retours visuels
+### Web Interface
+- Multiple session management
+- System prompt visualization and modification
+- Conversation history
+- Predefined prompts selection
+- Responsive and intuitive interface
+- Visual feedback system messages
 
-### Composants Clés
-1. **Agent Conversationnel** (`agent.py`)
-   - Gestion du modèle de langage (OpenAI)
-   - Gestion de la mémoire des conversations
-   - Traitement des prompts système
-   - Gestion des sessions utilisateurs
+### Key Components
+1. **Conversational Agent** (`agent.py`)
+   - Language model management (OpenAI)
+   - Conversation memory management
+   - System prompt processing
+   - User session management
 
-2. **Interface Web** (`web_app.py` + `static/index.html`)
-   - API REST avec FastAPI
-   - Interface utilisateur moderne avec Tailwind CSS
-   - Gestion asynchrone des requêtes
-   - Modales pour les fonctionnalités avancées
+2. **Web Interface** (`web_app.py` + `static/index.html`)
+   - REST API with FastAPI
+   - Modern UI with Tailwind CSS
+   - Asynchronous request handling
+   - Advanced feature modals
 
-3. **Interface CLI** (`cli.py`)
-   - Commandes interactives
-   - Support des arguments en ligne de commande
-   - Gestion des sessions
-   - Commandes d'administration
+3. **CLI Interface** (`cli.py`)
+   - Interactive commands
+   - Command-line argument support
+   - Session management
+   - Administrative commands
 
-### Gestion de la Mémoire
-- Stockage persistant des conversations
-- Historique par session
-- Gestion des prompts système personnalisés
-- Support de multiples utilisateurs simultanés
+### Memory Management
+- Persistent conversation storage
+- Session-based history
+- Custom system prompts management
+- Multiple simultaneous user support
 
-## Commandes CLI Disponibles
-- `quit` : Quitter l'application
-- `history` : Afficher l'historique de la conversation
-- `prompt` : Afficher le prompt système actuel
-- `set_prompt` : Définir un nouveau prompt système
-- `use_prompt <type>` : Utiliser un prompt prédéfini
-- `list_prompts` : Afficher les prompts prédéfinis disponibles
-- `reset` : Réinitialiser la conversation
-- `list_sessions` : Lister toutes les sessions disponibles
-- `switch_session <session_id>` : Changer de session
-- `help` : Afficher le message d'aide
+## Available CLI Commands
+- `quit` : Exit application
+- `history` : Display conversation history
+- `prompt` : Display current system prompt
+- `set_prompt` : Set new system prompt
+- `use_prompt <type>` : Use predefined prompt
+- `list_prompts` : Display available predefined prompts
+- `reset` : Reset conversation
+- `list_sessions` : List all available sessions
+- `switch_session <session_id>` : Switch to another session
+- `help` : Display help message
 
-## Notes de Développement
-- L'application utilise FastAPI pour l'API REST
-- L'interface web utilise Tailwind CSS pour le style
-- Les sessions sont persistantes grâce à SQLite
-- Support complet des caractères UTF-8 (accents français)
-- Gestion des erreurs et messages de confirmation
+## Development Notes
+- Application uses FastAPI for REST API
+- Web interface uses Tailwind CSS for styling
+- Sessions are persistent using SQLite
+- Full UTF-8 character support
+- Error handling and confirmation messages

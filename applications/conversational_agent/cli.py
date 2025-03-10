@@ -4,17 +4,17 @@ import argparse
 from datetime import datetime
 
 HELP_MESSAGE = """
-Commandes disponibles:
-- 'quit' : Quitter l'application
-- 'history' : Afficher l'historique de la conversation
-- 'prompt' : Afficher le prompt système actuel
-- 'set_prompt' : Définir un nouveau prompt système
-- 'use_prompt <type>' : Utiliser un prompt prédéfini (types: teacher, french, coder, writer)
-- 'list_prompts' : Afficher les prompts prédéfinis disponibles
-- 'reset' : Réinitialiser la conversation
-- 'list_sessions' : Lister toutes les sessions disponibles
-- 'switch_session <session_id>' : Changer de session
-- 'help' : Afficher ce message d'aide
+Available commands:
+- 'quit' : Exit the application
+- 'history' : Display conversation history
+- 'prompt' : Display current system prompt
+- 'set_prompt' : Set a new system prompt
+- 'use_prompt <type>' : Use a predefined prompt (types: teacher, french, coder, writer)
+- 'list_prompts' : Display available predefined prompts
+- 'reset' : Reset the conversation
+- 'list_sessions' : List all available sessions
+- 'switch_session <session_id>' : Switch to another session
+- 'help' : Display this help message
 """
 
 def main():
@@ -27,7 +27,7 @@ def main():
 
     current_session = args.session
     
-    # Sélectionner le prompt initial
+    # Select initial prompt
     initial_prompt = None
     if args.prompt_type:
         initial_prompt = PREDEFINED_PROMPTS[args.prompt_type]
@@ -35,10 +35,10 @@ def main():
         initial_prompt = args.system_prompt
 
     agent = ConversationalAgent(system_prompt=initial_prompt, db_path=args.db_path)
-    print(f"Agent initialisé (session: {current_session}). Tapez 'help' pour voir les commandes disponibles.")
+    print(f"Agent initialized (session: {current_session}). Type 'help' to see available commands.")
     
     while True:
-        user_input = input(f"\n[{current_session}] Vous: ").strip()
+        user_input = input(f"\n[{current_session}] You: ").strip()
         command_parts = user_input.lower().split()
         
         if user_input.lower() == 'quit':
@@ -54,27 +54,27 @@ def main():
                 
         elif user_input.lower() == 'list_sessions':
             sessions = agent.list_sessions()
-            print("\nSessions disponibles:")
+            print("\nAvailable sessions:")
             for session_id, prompt, last_updated in sessions:
-                print(f"- {session_id} (Dernière activité: {last_updated})")
+                print(f"- {session_id} (Last activity: {last_updated})")
                 print(f"  Prompt: {prompt[:50]}...")
                 
         elif command_parts[0] == 'switch_session' and len(command_parts) > 1:
             new_session = command_parts[1]
             current_session = new_session
-            print(f"Session changée pour: {current_session}")
+            print(f"Switched to session: {current_session}")
             
         elif user_input.lower() == 'prompt':
             current_prompt = agent._get_system_prompt(current_session)
-            print(f"\nPrompt système actuel:\n{current_prompt}")
+            print(f"\nCurrent system prompt:\n{current_prompt}")
             
         elif user_input.lower() == 'set_prompt':
-            new_prompt = input("Entrez le nouveau prompt système: ")
+            new_prompt = input("Enter new system prompt: ")
             agent.set_system_prompt(new_prompt, current_session)
-            print("Prompt système mis à jour.")
+            print("System prompt updated.")
             
         elif user_input.lower() == 'list_prompts':
-            print("\nPrompts prédéfinis disponibles:")
+            print("\nAvailable predefined prompts:")
             for prompt_type, prompt_text in PREDEFINED_PROMPTS.items():
                 print(f"\n- {prompt_type}:")
                 print(f"  {prompt_text}")
@@ -83,13 +83,13 @@ def main():
             prompt_type = command_parts[1]
             if prompt_type in PREDEFINED_PROMPTS:
                 agent.set_system_prompt(PREDEFINED_PROMPTS[prompt_type], current_session)
-                print(f"Prompt système changé pour: {prompt_type}")
+                print(f"System prompt changed to: {prompt_type}")
             else:
-                print(f"Prompt type '{prompt_type}' non trouvé. Utilisez 'list_prompts' pour voir les types disponibles.")
+                print(f"Prompt type '{prompt_type}' not found. Use 'list_prompts' to see available types.")
             
         elif user_input.lower() == 'reset':
             agent.reset_conversation(current_session)
-            print("Conversation réinitialisée.")
+            print("Conversation reset.")
             
         else:
             response = agent.chat(user_input, current_session)
