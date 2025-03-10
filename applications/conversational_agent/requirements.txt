@@ -1,0 +1,7 @@
+fastapi>=0.68.0
+uvicorn>=0.15.0
+websockets>=10.0
+python-dotenv>=0.19.0
+langchain>=0.0.200
+langchain_openai>=0.0.2
+pydantic>=1.8.2
